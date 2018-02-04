@@ -1,5 +1,10 @@
 
 authorize_samples/PolicySample/.vs/
+authorize_samples/PolicySample/PolicySample/bin/
+authorize_samples/PolicySample/PolicySample/obj/
 authorize_samples/MiddlewareSample/.vs/
 authorize_samples/MiddlewareSample/MiddlewareSample/bin/
 authorize_samples/MiddlewareSample/MiddlewareSample/obj/
+authorize_samples/CustomAttributeSample/.vs/
+authorize_samples/CustomAttributeSample/CustomAttributeSample/bin/
+authorize_samples/CustomAttributeSample/CustomAttributeSample/obj/
