@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Start Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="paho-mqtt-min.js"></script>
+  </head>
+  <body>
+    <label>接受到消息：</label>
+    <label id="messagelabel"></label>
+ 
+    <script>
+      //这里用的端口是61623 是apollo对应的ws协议端口
+       var client = new Paho.MQTT.Client("你的Apollo所在服务器ip", 61623, "jsclient");
+ 
+      client.onMessageArrived = function (msg) {
+        //收到消息
+        alert(msg.payloadString);
+      };
+ 
+      client.connect({
+        onSuccess: function () {
+          //订阅主题为topic2
+          client.subscribe("topic2");
+          //发布消息，主题为topic3
+          client.publish("topic3","Message from js client");
+        },
+        useSSL:false,
+        userName:"admin",
+        password:"password"
+      });
+    </script>
+  </body>
+</html>
