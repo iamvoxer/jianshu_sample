@@ -8,3 +8,8 @@ authorize_samples/MiddlewareSample/MiddlewareSample/obj/
 authorize_samples/CustomAttributeSample/.vs/
 authorize_samples/CustomAttributeSample/CustomAttributeSample/bin/
 authorize_samples/CustomAttributeSample/CustomAttributeSample/obj/
+apollo_samples/mqttdotnet-test/.vs/
+apollo_samples/mqttdotnet-test/MQTTDotClientTest/obj/
+apollo_samples/mqttdotnet-test/MQTTDotClientTest/bin/
+FormUploadSample/.vs/
+MigrationsSample/.vs/
