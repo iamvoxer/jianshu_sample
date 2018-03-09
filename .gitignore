@@ -13,3 +13,5 @@ apollo_samples/mqttdotnet-test/MQTTDotClientTest/obj/
 apollo_samples/mqttdotnet-test/MQTTDotClientTest/bin/
 FormUploadSample/.vs/
 MigrationsSample/.vs/
+FormUploadSample/FormUploadSample/obj/
+FormUploadSample/FormUploadSample/bin/
