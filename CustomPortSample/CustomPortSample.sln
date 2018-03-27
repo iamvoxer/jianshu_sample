@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2002
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPortSample", "CustomPortSample\CustomPortSample.csproj", "{422C9937-F9F8-4627-A24B-48AACB6832E5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{422C9937-F9F8-4627-A24B-48AACB6832E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{422C9937-F9F8-4627-A24B-48AACB6832E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{422C9937-F9F8-4627-A24B-48AACB6832E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{422C9937-F9F8-4627-A24B-48AACB6832E5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4662D54D-99AB-4A1C-B276-023EDC37B025}
+	EndGlobalSection
+EndGlobal
