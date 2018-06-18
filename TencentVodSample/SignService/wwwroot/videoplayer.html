@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+  <title>腾讯云视频点播示例</title>
+  <!-- 引入播放器 css 文件 -->
+  <link href="//imgcache.qq.com/open/qcloud/video/tcplayer/tcplayer.css" rel="stylesheet">
+  <!-- 如需在IE8、9浏览器中初始化播放器，浏览器需支持Flash并在页面中引入 -->
+  <!--[if lt IE 9]>
+  <script src="//imgcache.qq.com/open/qcloud/video/tcplayer/ie8/videojs-ie8.js"></script>
+  <![endif]-->
+  <!-- 如果需要在 Chrome Firefox 等现代浏览器中通过H5播放hls，需要引入 hls.js -->
+  <script src="//imgcache.qq.com/open/qcloud/video/tcplayer/lib/hls.min.0.8.8.js"></script>
+  <!-- 引入播放器 js 文件 -->
+  <script src="//imgcache.qq.com/open/qcloud/video/tcplayer/tcplayer.min.js"></script>
+  <!-- 示例 CSS 样式可自行删除 -->
+  <style>
+    html,body{
+      margin: 0;
+      padding: 0;
+    }
+    .tcplayer {
+      margin: 0 auto;
+    }
+    @media screen and (max-width: 640px) {
+      #player-container-id {
+        width: 100%;
+        height: 270px;
+      }
+    }
+    /* 设置logo在高分屏的显示样式 */
+    @media only screen and (min-device-pixel-ratio: 2), only screen and (-webkit-min-device-pixel-ratio: 2) {
+      .tcp-logo-img {
+        width: 50%;
+      }
+    }
+  </style>
+</head>
+<body>
+<!-- 设置播放器容器 -->
+<video id="player-container-id" preload="auto" width="640" height="360" playsinline webkit-playinline x5-playinline>
+</video>
+<!--
+注意事项：
+* 播放器容器必须为 video 标签
+* player-container-id 为播放器容器的ID，可自行设置
+* 播放器区域的尺寸请按需设置，建议通过 css 进行设置，通过css可实现容器自适应等效果
+* playsinline webkit-playinline x5-playinline 这几个属性是为了在标准移动端浏览器不劫持视频播放的情况下实现行内播放，此处仅作示例，请按需使用
+-->
+<script>
+  var player = TCPlayer('player-container-id', { // player-container-id 为播放器容器ID，必须与html中一致
+    fileID: '7447398156669699331', // 请传入需要播放的视频filID 必须
+    appID: '1256923424' // 请传入点播账号的appID 必须
+    //其他参数请在开发文档中查看
+  });
+/*
+ 注意事项：
+ * 示例代码使用的是新点播播放器，该点播播放器在灰度体验中，将逐步替换旧的点播播放器 qcplayer
+ */
+</script>
+</body>
+</html>

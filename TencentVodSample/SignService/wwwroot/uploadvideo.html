@@ -1,0 +1,66 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>视频上传demo</title>
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="This is my page">
+	<script src="http://imgcache.qq.com/open/qcloud/js/vod/sdk/ugcUploader.js"></script>
+	<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+
+<body>
+	<p>视频
+		<input type="file" id="vname" />
+	</p>
+	<p>图片
+		<input type="file" id="cname" />
+	</p>
+	<input type="button" onclick="uploadvideo()" value="上传视频"> 上传进度：
+	<progress id="progress" value="0" max="100">
+	</progress>
+</body>
+
+</html>
+<script>
+	var getSignature = function (callback) {
+		$.ajax({
+			url: "http://localhost:5000/api/uploadsign", //服务器获取客户端上传签名的URL
+			type: "POST",
+			success: function (result) {
+				callback(result);
+			}
+		});
+	};
+
+
+	var uploadvideo = function () {
+		var videoFile = document.getElementById("vname").files[0];
+		var coverFile = document.getElementById("cname").files[0];
+		qcVideo.ugcUploader.start({
+			videoFile: videoFile,
+			coverFile: coverFile,//封面，类型为 File
+			getSignature: getSignature,
+			error: function (result) {
+				alert('上传失败的文件类型：' + result.type+"\n"+'上传失败的原因：' + result.msg);
+			},
+			progress: function (result) {
+				document.getElementById("progress").value=result.shacurr*100;
+			},
+			finish: function (result) {
+				var info ={
+					"上传结果的 fileId":result.fileId,
+					"上传结果的视频名称": result.videoName,
+					"上传结果的视频地址":result.videoUrl,
+				 	"上传结果的封面名称":result.coverName,
+					"上传结果的封面地址":result.coverUrl
+				}
+				alert(JSON.stringify(info,null,2));
+				console.log(JSON.stringify(result,null,2));
+			}
+		});
+	}
+</script>
