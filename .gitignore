@@ -3,3 +3,6 @@ Migrations/
 .vs/
 bin/
 obj/
+BlueSample/lib/opencv_java342.dll
+BlurSample/lib/opencv_java342.dll
+BlurSample/dst.jpg
