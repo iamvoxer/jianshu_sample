@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <PackageId>d1.framework.sms</PackageId>
+    <Authors>But</Authors>
+    <Company>But</Company>
+    <Description>短信服务</Description>
+    <PackageLicenseUrl>http://mit</PackageLicenseUrl>
+    <PackageProjectUrl>http://</PackageProjectUrl>
+    <PackageIconUrl>http://icon</PackageIconUrl>
+    <PackageTags>sms</PackageTags>
+    <PackageReleaseNotes>完成ucpaas.云之讯平台</PackageReleaseNotes>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
+  </ItemGroup>
+</Project>
