@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!-- 引入 ECharts 文件 -->
+  <script src="echarts.min.js"></script>
+  <script src="paho-mqtt-min.js"></script>
+
+<body>
+  <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+  <div id="cpu" style="width: 1200px;height:400px;"></div>
+  <div id="memory" style="width: 1200px;height:400px;"></div>
+  <script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var xDatasCPU = [];
+    var xDatasMemory = [];
+    var yDatasCPU = [];
+    var yDatasMemory = [];
+    var cpuChart = echarts.init(document.getElementById("cpu"));
+    var memoryChart = echarts.init(document.getElementById("memory"));
+    var cpuOption = initChart(cpuChart, "cpu", xDatasCPU, yDatasCPU);
+    var memoryOption = initChart(memoryChart, "memory", xDatasMemory, yDatasMemory)
+    initMQTT();
+    //
+    function initChart(chart, name, xDatas, yDatas) {
+      // 指定图表的配置项和数据
+      var option = {
+        title: {
+          text: name+"空闲%"
+        },
+        tooltip: {},
+        legend: {
+          data: [name]
+        },
+        xAxis: {
+          data: xDatas
+        },
+        yAxis: {},
+        series: [{
+          name: '空闲',
+          type: 'line',
+          data: yDatas
+        }]
+      };
+      chart.setOption(option)
+      return option;
+    }
+    //
+    function initMQTT() {
+      // Create a client instance
+      var client = new Paho.Client("broker的地址", 8083, "/mqtt", getRandomString());
+
+      // set callback handlers
+      client.onConnectionLost = onConnectionLost;
+      client.onMessageArrived = onMessageArrived;
+
+      // connect the client
+      client.connect({
+        userName: "user2",
+        password: "password2",
+        onSuccess: onConnect,
+        onFailure: onFailure
+      });
+
+      // called when the client failed to connect
+      function onFailure(error) {
+        console.log("onFailure:" + JSON.stringify(error));
+      }
+      // called when the client connects
+      function onConnect() {
+        // Once a connection has been made, make a subscription and send a message.
+        console.log("onConnect");
+        client.subscribe("cpu");
+        client.subscribe("memory");
+      }
+
+      // called when the client loses its connection
+      function onConnectionLost(responseObject) {
+        if (responseObject.errorCode !== 0) {
+          console.log("onConnectionLost:" + responseObject.errorMessage);
+        }
+      }
+
+      // called when a message arrives
+      function onMessageArrived(message) {
+        console.log("onMessageArrived:" + JSON.stringify(message));
+        
+        if (message.payloadString) {
+          var temp = message.payloadString;
+          if ("cpu" == message.topic) {
+          	if(yDatasCPU.length>100)//不能无限增长，只保留最新100条
+          		yDatasCPU.shift();
+            yDatasCPU.push(Number.parseFloat(temp.substring(0, temp.length - 1)));
+            if(xDatasCPU.length>100)
+          		xDatasCPU.shift();
+            xDatasCPU.push(getNow());
+            cpuChart.setOption(cpuOption);
+          } else if ("memory" == message.topic) {
+          	if(xDatasMemory.length>100)
+          		xDatasMemory.shift();
+            xDatasMemory.push(getNow());
+            if(yDatasMemory.length>100)
+          		yDatasMemory.shift();
+            yDatasMemory.push(Number.parseFloat(temp.substring(0, temp.length - 1)));
+            memoryChart.setOption(memoryOption);
+          }
+        }
+      }
+    }
+
+    function getRandomString() {
+      return new Date().getTime() + "-" + Math.random() * 10000;
+    }
+
+    function getNow() {
+      var now = new Date();
+
+      var year = now.getFullYear(); //年
+      var month = now.getMonth() + 1; //月
+      var day = now.getDate(); //日
+
+      var hh = now.getHours(); //时
+      var mm = now.getMinutes(); //分
+      var ss = now.getSeconds(); //秒
+
+      var clock = year + "-";
+
+      if (month < 10)
+        clock += "0";
+
+      clock += month + "-";
+
+      if (day < 10)
+        clock += "0";
+
+      clock += day + " ";
+
+      if (hh < 10)
+        clock += "0";
+
+      clock += hh + ":";
+      if (mm < 10) clock += '0';
+      clock += mm + ":";
+
+      if (ss < 10) clock += '0';
+      clock += ss;
+      return (clock);
+    }
+  </script>
+</body>
+
+</html>

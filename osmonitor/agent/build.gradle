@@ -1,0 +1,22 @@
+plugins {
+    id 'org.springframework.boot' version '2.0.4.RELEASE'
+    id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'd1.project'
+version = '0.0.1'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+    maven { url 'http://我们内部的库地址/repository/d1-java/' }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    compile ('d1.framework:osinfo:1.0.4')
+    compile('d1.framework:mqttclient:1.0.3')
+}
