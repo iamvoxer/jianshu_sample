@@ -1,0 +1,111 @@
+{
+  "class": "go.GraphLinksModel",
+  "nodeDataArray": [
+    {
+      "key": "start",
+      "category": "start",
+      "text": "开始"
+    },
+    {
+      "key": "end",
+      "category": "end",
+      "text": "结束"
+    },
+    {
+      "key": "S1",
+      "category": "step",
+      "text": "财务审批",
+      "order": "#1:"
+    },
+    {
+      "key": "TR1",
+      "category": "audit",
+      "text": "财务处"
+    },
+    {
+      "key": "S2",
+      "category": "step",
+      "text": "财务总监审批",
+      "order": "#2:"
+    },
+    {
+      "key": "TR2",
+      "category": "audit",
+      "text": "财务总监"
+    },
+    {
+      "key": "S3",
+      "category": "step",
+      "text": "总经理审批",
+      "order": "#3:"
+    },
+    {
+      "key": "TR3",
+      "category": "audit",
+      "text": "总经理"
+    },
+    {
+      "key": "S5",
+      "category": "step",
+      "text": "Step 5"
+    }
+  ],
+  "linkDataArray": [
+    {
+      "from": "TR3",
+      "to": "start",
+      "category": "reject",
+      "text": "驳 回"
+    },
+    {
+      "from": "TR2",
+      "category": "reject",
+      "to": "start",
+      "text": "驳 回"
+    },
+    {
+      "from": "TR1",
+      "category": "reject",
+      "to": "start",
+      "text": "驳 回"
+    },
+    {
+      "from": "start",
+      "to": "S1"
+    },
+    {
+      "from": "S1",
+      "to": "TR1"
+    },
+    {
+      "from": "TR1",
+      "category": "pass",
+      "text": "通 过",
+      "to": "S2"
+    },
+    {
+      "from": "S2",
+      "to": "TR2"
+    },
+    {
+      "from": "TR2",
+      "category": "pass",
+      "text": "通 过",
+      "to": "S3"
+    },
+    {
+      "from": "S3",
+      "to": "TR3"
+    },
+    {
+      "from": "TR3",
+      "to": "S5",
+      "category": "pass",
+      "text": "通 过"
+    },
+    {
+      "from": "S5",
+      "to": "end"
+    }
+  ]
+}

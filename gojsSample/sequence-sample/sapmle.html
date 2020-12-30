@@ -1,0 +1,205 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="./go.js"></script>
+    <script src="./jquery-3.5.1.min.js"></script>
+</head>
+<body>
+<div id="myDiagramDiv" style="width: 1024px;height:800px;"></div>
+<script type="text/javascript">
+    let make = go.GraphObject.make;
+    let myDiagram = make(go.Diagram, "myDiagramDiv", {
+        layout: make(go.LayeredDigraphLayout, {direction: 90, layerSpacing: 10, setsPortSpots: true}),
+        "undoManager.isEnabled": true  // enable undo & redo
+    });
+    myDiagram.nodeTemplateMap.add("start", makeCycleNode("green"));
+    myDiagram.nodeTemplateMap.add("end", makeCycleNode("orange"));
+    myDiagram.nodeTemplateMap.add("audit", makeBarNode());
+    myDiagram.nodeTemplateMap.add("step", makeProcessNode());
+
+    myDiagram.linkTemplateMap.add("pass", makeLink("green"));
+    myDiagram.linkTemplateMap.add("reject", makeLink("red"));
+
+    // $.get('./viewmodel.json', function (json) { //测试的时候可以直接用viewmodel.json来测
+    $.get('./model.json', function (json) {
+        myDiagram.model = go.Model.fromJson(model2ViewModel(json))
+    }, 'json');
+
+    function model2ViewModel(model) {
+        if (!model)
+            return {};
+        //把后台获取到的数据model转换成view model,model的格式参考model.json,view model的格式参考view model.json
+        let viewmodel = {}
+        viewmodel["class"] = "go.GraphLinksModel";
+        viewmodel.nodeDataArray = [
+            {
+                "key": "start",
+                "category": "start",
+                "text": "开始"
+            },
+            {
+                "key": "end",
+                "category": "end",
+                "text": "结束"
+            }];
+
+        viewmodel.linkDataArray = [
+            {
+                "from": "start",
+                "to": "process1"
+            }];
+        let i = 1;
+        for (let j = 0; j < model.length; j++) {
+            let obj = model[j];
+            viewmodel.nodeDataArray.push({
+                    "key": "process" + i,
+                    "category": "step",
+                    "text": obj.name,
+                    "order": "#" + i + ":"
+                },
+                {
+                    "key": "audit" + i,
+                    "category": "audit",
+                    "text": obj.roleName
+                });
+            viewmodel.linkDataArray.push(
+                {
+                    "from": "process" + i,
+                    "to": "audit" + i
+                },
+                {
+                    "from": "audit" + i,
+                    "category": "reject",
+                    "text": "驳 回",
+                    "to": "start"
+                }
+            );
+            if (i !== model.length) {
+                viewmodel.linkDataArray.push(
+                    {
+                        "from": "audit" + i,
+                        "category": "pass",
+                        "text": "通 过",
+                        "to": "process" + (i + 1)
+                    }
+                );
+            } else {
+                viewmodel.linkDataArray.push(
+                    {
+                        "from": "audit" + i,
+                        "category": "pass",
+                        "text": "通 过",
+                        "to": "end"
+                    }
+                );
+            }
+            i++;
+        }
+        console.log(viewmodel)
+        return viewmodel;
+    }
+
+    function makeCycleNode(color) {
+        //圆形节点
+        //绿色的是起始节点 start
+        //橙色的是终止节点 end
+        return make(go.Node, "Spot",
+            {locationSpot: go.Spot.Center},
+            new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+            make(go.Shape, "Circle",
+                {
+                    fill: color,
+                    stroke: color,
+                    strokeWidth: 2,
+                    desiredSize: new go.Size(60, 60),
+                    portId: "",  // so that links connect to the Shape, not to the whole Node
+                    fromSpot: go.Spot.BottomSide,
+                    toSpot: go.Spot.TopSide,
+                    alignment: go.Spot.Center
+                }),
+            make(go.TextBlock,
+                {
+                    font: "16px sans-serif",
+                    stroke: "white",
+                    alignment: go.Spot.Center,
+                    wrap: go.TextBlock.WrapFit,
+                    editable: false
+                },
+                new go.Binding("text", "text").makeTwoWay())
+        );
+    }
+
+    function makeBarNode() {
+        //小的绿色矩形表示审核流程的角色
+        return make(go.Node, "Horizontal",
+            {locationSpot: go.Spot.Center, locationObjectName: "BAR"},
+            new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+            make(go.Shape, "Rectangle",
+                {
+                    name: "BAR",
+                    fill: "green",
+                    stroke: null,
+                    desiredSize: new go.Size(60, 8),
+                    portId: "",
+                    fromSpot: go.Spot.BottomSide,
+                    toSpot: go.Spot.TopSide
+                }),
+            make(go.TextBlock,
+                {editable: false, margin: 3},
+                new go.Binding("text", "text").makeTwoWay())
+        )
+    }
+
+    function makeProcessNode() {
+        //审批流程基本节点，是一个正常的矩形
+        return make(go.Node, "Spot",
+            {locationSpot: go.Spot.Center},
+            new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+            make(go.Shape, "Rectangle",
+                {
+                    fill: "whitesmoke",
+                    stroke: "gray",
+                    strokeWidth: 2,
+                    desiredSize: new go.Size(160, 60),
+                    portId: "",  // so that links connect to the Shape, not to the whole Node
+                    fromSpot: go.Spot.BottomSide,
+                    toSpot: go.Spot.TopSide,
+                    alignment: go.Spot.Center
+                }),
+            make(go.TextBlock,
+                {
+                    font: "bold 12px sans-serif",
+                    alignment: new go.Spot(0.1, 0.18),
+                    wrap: go.TextBlock.WrapFit,
+                    editable: false
+                },
+                new go.Binding("text", "order").makeTwoWay()),
+            make(go.TextBlock,
+                {
+                    font: "16px sans-serif",
+                    alignment: go.Spot.Center,
+                    wrap: go.TextBlock.WrapFit,
+                    editable: false
+                },
+                new go.Binding("text", "text").makeTwoWay())
+        )
+    }
+
+    function makeLink(color) {
+        //绿色的是通过 pass
+        //红色的是驳回 reject
+        return make(go.Link,
+            {routing: go.Link.Orthogonal},
+            make(go.Shape,
+                {stroke: "black", strokeWidth: 1},
+            ),
+
+            make(go.TextBlock,
+                {editable: false, margin: 3, stroke: color},
+                new go.Binding("text", "text").makeTwoWay()),
+            make(go.Shape, {toArrow: "OpenTriangle"})
+        );
+    }
+</script>
+</body>
+</html>
