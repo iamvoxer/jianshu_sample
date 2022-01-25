@@ -6,3 +6,6 @@ obj/
 BlueSample/lib/opencv_java342.dll
 BlurSample/lib/opencv_java342.dll
 BlurSample/dst.jpg
+eventbus_sample/.gradle/
+eventbus_sample/.idea/
+eventbus_sample/build/
