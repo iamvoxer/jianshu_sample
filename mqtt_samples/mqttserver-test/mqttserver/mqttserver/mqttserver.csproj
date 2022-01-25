@@ -12,7 +12,7 @@
     <PackageReference Include="DotNetty.Common" Version="0.4.7" />
     <PackageReference Include="DotNetty.Handlers" Version="0.4.7" />
     <PackageReference Include="DotNetty.Transport" Version="0.4.7" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
   </ItemGroup>
 
 </Project>
