@@ -9,3 +9,6 @@ BlurSample/dst.jpg
 eventbus_sample/.gradle/
 eventbus_sample/.idea/
 eventbus_sample/build/
+/jarsample/itest/build/
+/jarsample/test1/build/
+/jarsample/test2/build/

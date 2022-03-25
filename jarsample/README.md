@@ -1,0 +1,1 @@
+java -Djava.ext.dirs=./lib -jar webapisample.jar
